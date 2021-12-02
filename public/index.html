@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="css/app.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
+        <script src="js/app.js" charset="utf-8"></script>
+    </head>
+    <body ng-controller="MyController as ctrl">
+      {{ctrl.foo}}
+      <form ng-submit="ctrl.createMessage()">
+        {{ctrl.name}} - {{ctrl.content}}
+        <input type="text" ng-model="ctrl.name" placeholder="name"/>
+        <input type="text" ng-model="ctrl.content" placeholder="content"/>
+        <input type="submit" value="Send Message"/>
+      </form>
+
+      <ul>
+        <li ng-repeat="message in ctrl.messages">
+          {{message.name}}
+          {{message.content}}
+          <button ng-click="ctrl.deleteMessage(message)">Delete</button>
+
+          <a
+          ng-if="$index !== ctrl.indexOfEditFormToShow"
+          href="#"
+          ng-click="ctrl.indexOfEditFormToShow = $index">
+              Edit
+          </a>
+          <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
+
+          <form ng-submit="ctrl.editMessage(message);">
+            <input type="text" ng-model="ctrl.updatedContent" placeholder="content" />
+            <input type="submit" value="Update Content">
+          </form>
+        </li>
+      </ul>
+    </body>
+</html>
