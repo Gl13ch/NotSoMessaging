@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html ng-app="MyApp">
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <link rel="stylesheet" href="css/app.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
-        <script src="js/app.js" charset="utf-8"></script>
-    </head>
-    <body ng-controller="MyController as ctrl">
-      {{ctrl.foo}}
+  <head>
+      <meta charset="utf-8">
+      <title></title>
+      <link rel="stylesheet" href="css/app.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
+      <script src="js/app.js" charset="utf-8"></script>
+  </head>
+  <body ng-controller="MyController as ctrl">
+    {{ctrl.foo}}
+
+    <section ng-if="ctrl.loggedInUser === false">
+      <h2>Sign Up</h2>
+      <form ng-submit="ctrl.signup()"><!-- add ng-submit -->
+        Username: <input type="text" ng-model="ctrl.signupUsername" /><br/>
+        Password: <input type="password" ng-model="ctrl.signupPassword"/><br/>
+          <input type="submit" value="Sign Up">
+      </form>
+      <h2>Log In</h2>
+      <form ng-submit="ctrl.login()">
+          Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
+          Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
+          <input type="submit" value="Log In">
+      </form>
+    </section>
+    <section ng-if="ctrl.loggedInUser !== false">
+      <h2>Welcome {{ctrl.loggedInUser.username}}</h2>
+      <button onClick="window.location.reload();" ng-click="ctrl.logout()">Log Out</button>
       <form ng-submit="ctrl.createMessage()">
         {{ctrl.name}} - {{ctrl.content}}
         <input type="text" ng-model="ctrl.name" placeholder="name"/>
@@ -31,10 +49,11 @@
           <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
 
           <form ng-submit="ctrl.editMessage(message);">
-            <input type="text" ng-model="ctrl.updatedContent" placeholder="content" />
-            <input type="submit" value="Update Content">
+            <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
+            <input type="submit" value="Save" >
           </form>
         </li>
       </ul>
+    </section>
     </body>
 </html>
