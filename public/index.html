@@ -1,59 +1,79 @@
 <!DOCTYPE html>
 <html ng-app="MyApp">
   <head>
-      <meta charset="utf-8">
-      <title></title>
-      <link rel="stylesheet" href="css/app.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
-      <script src="js/app.js" charset="utf-8"></script>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="css/app.css">
+    <script src="https://cdn.pubnub.com/pubnub-3.7.21.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
+    <script src="https://cdn.pubnub.com/sdk/pubnub-angular/pubnub-angular-3.2.1.js"></script>
+    <script src="js/app.js" charset="utf-8"></script>
+    <!-- <script src="js/livechat.js" charset="utf-8"></script> -->
   </head>
   <body ng-controller="MyController as ctrl">
-    {{ctrl.foo}}
 
-    <section ng-if="ctrl.loggedInUser === false">
-      <h2>Sign Up</h2>
-      <form ng-submit="ctrl.signup()">
-        Username: <input type="text" ng-model="ctrl.signupUsername" /><br/>
-        Password: <input type="password" ng-model="ctrl.signupPassword"/><br/>
-          <input type="submit" value="Sign Up">
-      </form>
-      <h2>Log In</h2>
-      <form ng-submit="ctrl.login()">
-          Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
-          Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
-          <input type="submit" value="Log In">
-      </form>
-    </section>
-    <section ng-if="ctrl.loggedInUser !== false">
-      <h2>Welcome {{ctrl.loggedInUser.username}}</h2>
-      <button onClick="window.location.reload();" ng-click="ctrl.logout()">Log Out</button>
+      <section ng-if="ctrl.loggedInUser === false">
+        <h2>Sign Up</h2>
+        <form ng-submit="ctrl.signup()">
+          Username: <input type="text" ng-model="ctrl.signupUsername" /><br/>
+          Password: <input type="password" ng-model="ctrl.signupPassword"/><br/>
+            <input type="submit" value="Sign Up">
+        </form>
+        <h2>Log In</h2>
+        <form ng-submit="ctrl.login()">
+            Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
+            Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
+            <input type="submit" value="Log In">
+        </form>
+      </section>
+      <section ng-if="ctrl.loggedInUser !== false">
+        <h2>Welcome {{ctrl.loggedInUser.username}}</h2>
+        <button onClick="window.location.reload();" ng-click="ctrl.logout()">Log Out</button>
 
-      <form ng-submit="ctrl.createMessage()">
-        <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name =ctrl.loggedInUser.username"/>
-        <textarea type="text" ng-model="ctrl.content" placeholder="content"></textarea>
-        <input type="submit" value="Send Message"/>
-      </form>
+        <form ng-submit="ctrl.createMessage()">
+          <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name =ctrl.loggedInUser.username"/>
+          <textarea type="text" ng-model="ctrl.content" placeholder="content"></textarea>
+          <input type="submit" value="Send Message"/>
+        </form>
 
-      <ul>
-        <li ng-repeat="message in ctrl.messages">
-          {{message.name}}
-          {{message.content}}
-          <button ng-click="ctrl.deleteMessage(message)">Delete</button>
+        <ul>
+          <li ng-repeat="message in ctrl.messages">
+            {{message.name}}
+            {{message.content}}
+            <button ng-click="ctrl.deleteMessage(message)">Delete</button>
 
-          <a
-          ng-if="$index !== ctrl.indexOfEditFormToShow"
-          href="#"
-          ng-click="ctrl.indexOfEditFormToShow = $index">
-              Edit
-          </a>
-          <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
+            <a
+            ng-if="$index !== ctrl.indexOfEditFormToShow"
+            href="#"
+            ng-click="ctrl.indexOfEditFormToShow = $index">
+                Edit
+            </a>
+            <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
 
-          <form ng-submit="ctrl.editMessage(message);">
-            <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
-            <input type="submit" value="Save" >
+            <form ng-submit="ctrl.editMessage(message);">
+              <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
+              <input type="submit" value="Save" >
+            </form>
+          </li>
+        </ul>
+
+        <div ng-controller="ChatCtrl">
+         <form ng-submit="sendMessage()">
+           <input ng-model="messageContent" type="text" placeholder="Type your message" />
+           <button type="submit">Send</button>
           </form>
-        </li>
-      </ul>
-    </section>
+
+          <ul>
+            <li ng-repeat="message in messages">
+              <span class="title">Anonymous robot #{{ message.sender_uuid }}</span>
+              <p>{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</br> {{ message.content }}</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+
+
+
     </body>
 </html>
