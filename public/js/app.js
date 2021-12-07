@@ -1,20 +1,18 @@
-'use strict';
-
 const app = angular.module('MyApp', []);
 
 // app.factory('storageService', ['$rootScope', function($rootScope) {
 //
 //     return {
 //         get: function(key) {
-//             return sessionStorage.getItem(key);
+//             return localStorage.getItem(key);
 //         },
-//         save: function(key, data) {
-//             sessionStorage.setItem(key, data);
+//         set: function(key, data) {
+//             localStorage.setItem(key, data);
 //         }
 //     };
 // }]);
 
-app.controller('MyController', ['$http', function($http, $scope){
+app.controller('MyController', ['$http', '$window', function($http, $scope, $window){
     this.name = null;
     this.content = null;
     this.indexOfEditFormToShow = null;
@@ -103,12 +101,8 @@ app.controller('MyController', ['$http', function($http, $scope){
   }).then(function(response){
       if(response.data.username){
         // console.log(response.data);
-
         controller.loggedInUser = response.data;
-        // if (controller.loggedInUser = response.data) {
-        //   sessionStorage.setItem('data', JSON.stringify(response.data))
-        // }
-
+        $window.localStorage.setItem('data', 'response.data.username')
 
       } else {
         controller.loginUsername = null;
@@ -121,9 +115,12 @@ app.controller('MyController', ['$http', function($http, $scope){
       method:'GET',
       url:'https://agile-temple-00865.herokuapp.com/sessions'
   }).then(function(response){
-      console.log(response);
-      // let retrieved = sessionStorage.getItem('data')
-      // response.data = JSON.parse(retrieved);
+      // console.log(response);
+      // let data = $window.localStorage.getItem('data')
+      // if (controller.loggedInUser !== false) {
+        // response.data = JSON.parse(data);
+        console.log(response);
+      // }
   });
 
   this.logout = function(){
@@ -131,12 +128,8 @@ app.controller('MyController', ['$http', function($http, $scope){
         url:'https://agile-temple-00865.herokuapp.com/sessions',
         method:'DELETE'
     }).then(function(){
-        controller.loggedInUser = false;
-        // if (controller.loggedInUser = false) {
-        //   sessionStorage.removeItem('data')
-        // }
-        // let retrieved = sessionStorage.getItem('data')
-        // response.data = JSON.parse(retrieved);
+      controller.loggedInUser = false;
+      $window.localStorage.removeItem('data')
     })
   }
 
