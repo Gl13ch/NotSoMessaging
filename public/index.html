@@ -4,11 +4,8 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="css/app.css">
-    <script src="https://cdn.pubnub.com/pubnub-3.7.21.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
-    <script src="https://cdn.pubnub.com/sdk/pubnub-angular/pubnub-angular-3.2.1.js"></script>
     <script src="js/app.js" charset="utf-8"></script>
-    <!-- <script src="js/livechat.js" charset="utf-8"></script> -->
   </head>
   <body ng-controller="MyController as ctrl">
 
@@ -57,7 +54,7 @@
           </li>
         </ul>
 
-        <div ng-controller="ChatCtrl">
+        <!-- <div ng-controller="ChatCtrl">
          <form ng-submit="sendMessage()">
            <input ng-model="messageContent" type="text" placeholder="Type your message" />
            <button type="submit">Send</button>
@@ -69,7 +66,7 @@
               <p>{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</br> {{ message.content }}</p>
             </li>
           </ul>
-        </div>
+        </div> -->
       </section>
 
 
