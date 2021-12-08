@@ -22,6 +22,7 @@ I tried to make this with AngularTs and hit quite a few road blocks. I decided t
 * Need error handling for signup. When a user tries to sign up with an already created username it still logs them in and allows them to interact with the app even though there is no username connected to them.
 
 ## Features that still need to be implemented
+* CSS
 * Admin Mode button. When an admin is logged in they should be able to toggled admin mode which will let them delete any message even if it is from other users.
 * Friends list.
 * Profiles.
