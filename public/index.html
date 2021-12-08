@@ -8,27 +8,38 @@
     <script src="js/app.js" charset="utf-8"></script>
   </head>
   <body ng-controller="MyController as ctrl">
+      <section class="login-signup" ng-if="ctrl.loggedInUser === false">
+        <div ng-switch="toggleLogin">
+          <div ng-switch-default>
+            <h2>Sign Up</h2>
+            <form ng-submit="ctrl.signup()">
+              Username: <input type="text" ng-model="ctrl.signupUsername" /><br/>
+              Password: <input type="password" ng-model="ctrl.signupPassword"/><br/>
+                <input type="submit" value="Sign Up">
+            </form>
+          </div>
+          <div ng-switch-when=true>
+            <h2>Log In</h2>
+            <form ng-submit="ctrl.login()">
+                Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
+                Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
+                <input type="submit" value="Log In">
+            </form>
+          </div>
+          <br />
+          <button ng-click="toggleLogin = !toggleLogin">
+            <span ng-show="toggleLogin">Need an account?</span>
+            <span ng-hide="toggleLogin">Already have an account?</span>
+          </button>
 
-      <section ng-if="ctrl.loggedInUser === false">
-        <h2>Sign Up</h2>
-        <form ng-submit="ctrl.signup()">
-          Username: <input type="text" ng-model="ctrl.signupUsername" /><br/>
-          Password: <input type="password" ng-model="ctrl.signupPassword"/><br/>
-            <input type="submit" value="Sign Up">
-        </form>
-        <h2>Log In</h2>
-        <form ng-submit="ctrl.login()">
-            Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
-            Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
-            <input type="submit" value="Log In">
-        </form>
+        </div>
       </section>
       <section ng-if="ctrl.loggedInUser !== false">
         <h2>Welcome {{ctrl.loggedInUser.username}}</h2>
         <button onClick="window.location.reload();" ng-click="ctrl.logout()">Log Out</button>
 
         <form ng-submit="ctrl.createMessage()">
-          <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name =ctrl.loggedInUser.username"/>
+          <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name = ctrl.loggedInUser.username"/>
           <textarea type="text" ng-model="ctrl.content" placeholder="content"></textarea>
           <input type="submit" value="Send Message"/>
         </form>
@@ -37,20 +48,23 @@
           <li ng-repeat="message in ctrl.messages">
             {{message.name}}
             {{message.content}}
-            <button ng-click="ctrl.deleteMessage(message)">Delete</button>
+            {{ message.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}
 
-            <a
-            ng-if="$index !== ctrl.indexOfEditFormToShow"
-            href="#"
-            ng-click="ctrl.indexOfEditFormToShow = $index">
-                Edit
-            </a>
-            <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
+            <div ng-if="ctrl.loggedInUser.username === message.name">
+              <button ng-click="ctrl.deleteMessage(message)">Delete</button>
 
-            <form ng-submit="ctrl.editMessage(message);">
-              <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
-              <input type="submit" value="Save" >
-            </form>
+              <a
+              ng-if="$index !== ctrl.indexOfEditFormToShow"
+              href="#"
+              ng-click="ctrl.indexOfEditFormToShow = $index">
+                  Edit
+              </a>
+              <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
+              <form ng-submit="ctrl.editMessage(message);">
+                <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
+                <input type="submit" value="Save" >
+              </form>
+            </div>
           </li>
         </ul>
 

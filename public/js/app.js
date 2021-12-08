@@ -15,9 +15,12 @@ const app = angular.module('MyApp', []);
 app.controller('MyController', ['$http', '$window', function($http, $scope, $window){
     this.name = null;
     this.content = null;
+    this.createdAt = null;
     this.indexOfEditFormToShow = null;
     this.loggedInUser = false;
     const controller = this;
+    $scope.toggleLogin = true;
+    // date = new Date();
 
     this.createMessage = function(){
         $http({
@@ -25,9 +28,11 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
             url: 'https://agile-temple-00865.herokuapp.com/messages/',
             data: {
                 name: this.name,
-                content: this.content
+                content: this.content,
+                createdAt: this.createdAt
             }
         }).then(function(response){
+          console.log(response);
              controller.getMessages(); //get all todos when new element is added
         }, function(){
             console.log('error');
@@ -102,7 +107,7 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
       if(response.data.username){
         // console.log(response.data);
         controller.loggedInUser = response.data;
-        $window.localStorage.setItem('data', 'response.data.username')
+        // $window.localStorage.setItem('data', 'response.data.username')
 
       } else {
         controller.loginUsername = null;
@@ -119,7 +124,6 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
       // let data = $window.localStorage.getItem('data')
       // if (controller.loggedInUser !== false) {
         // response.data = JSON.parse(data);
-        console.log(response);
       // }
   });
 
@@ -129,7 +133,7 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
         method:'DELETE'
     }).then(function(){
       controller.loggedInUser = false;
-      $window.localStorage.removeItem('data')
+      // $window.localStorage.removeItem('data')
     })
   }
 
@@ -166,7 +170,7 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
 //   }
 // }]);
 
-// LIVECHAT ===========================================
+// PUBNUB ===========================================
 
 // app.controller('ChatCtrl', function($scope, Pubnub) {
 //     $scope.channel = 'messages-channel';
