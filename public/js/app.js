@@ -20,6 +20,7 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
     this.loggedInUser = false;
     const controller = this;
     $scope.toggleLogin = true;
+    $scope.adminmode = true;
     // date = new Date();
 
     this.createMessage = function(){

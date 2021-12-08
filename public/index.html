@@ -40,7 +40,7 @@
 
         <form ng-submit="ctrl.createMessage()">
           <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name = ctrl.loggedInUser.username"/>
-          <textarea type="text" ng-model="ctrl.content" placeholder="content"></textarea>
+          <textarea onfocus="this.value=''" type="text" ng-model="ctrl.content" placeholder="content"></textarea>
           <input type="submit" value="Send Message"/>
         </form>
 
@@ -50,9 +50,10 @@
             {{message.content}}
             {{ message.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}
 
-            <div ng-if="ctrl.loggedInUser.username === message.name">
+            <div ng-if="ctrl.loggedInUser.username === 'admin' || ctrl.loggedInUser.username === message.name">
               <button ng-click="ctrl.deleteMessage(message)">Delete</button>
-
+            </div>
+            <div ng-if="ctrl.loggedInUser.username === message.name">
               <a
               ng-if="$index !== ctrl.indexOfEditFormToShow"
               href="#"
@@ -67,24 +68,10 @@
             </div>
           </li>
         </ul>
-
-        <!-- <div ng-controller="ChatCtrl">
-         <form ng-submit="sendMessage()">
-           <input ng-model="messageContent" type="text" placeholder="Type your message" />
-           <button type="submit">Send</button>
-          </form>
-
-          <ul>
-            <li ng-repeat="message in messages">
-              <span class="title">Anonymous robot #{{ message.sender_uuid }}</span>
-              <p>{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</br> {{ message.content }}</p>
-            </li>
-          </ul>
+        <!-- <div ng-if="ctrl.loggedInUser.username === 'admin'">
+          <button ng-click="adminmode = !adminmode">Admin Mode</button>
         </div> -->
       </section>
-
-
-
 
     </body>
 </html>
