@@ -9,7 +9,6 @@ https://notsomessaging.netlify.app/
   * Javascript
   * AngularJs
 
-
 ## User Stories
 * A user should be able to log in and sign up.
 * A logged in user should be able to send a message.
@@ -27,3 +26,4 @@ I tried to make this with AngularTs and hit quite a few road blocks. I decided t
 * Friends list.
 * Profiles.
 * Live Chat.
+* localStorage.
