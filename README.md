@@ -27,4 +27,5 @@ I tried to make this with AngularTs and hit quite a few road blocks. I decided t
 * Friends list.
 * Profiles.
 * Live Chat.
+* Chat rooms.
 * localStorage.
