@@ -13,59 +13,66 @@ const app = angular.module('MyApp', []);
 // }]);
 
 app.controller('MyController', ['$http', '$window', function($http, $scope, $window){
-    this.name = null;
-    this.content = null;
-    this.createdAt = null;
-    this.indexOfEditFormToShow = null;
-    this.loggedInUser = false;
-    const controller = this;
-    $scope.toggleLogin = true;
-    $scope.adminmode = true;
-    // date = new Date();
 
-    this.createMessage = function(){
-        $http({
-            method:'POST',
-            url: 'https://agile-temple-00865.herokuapp.com/messages/',
-            data: {
-                name: this.name,
-                content: this.content,
-                createdAt: this.createdAt
-            }
-        }).then(function(response){
-          console.log(response);
-             controller.getMessages(); //get all todos when new element is added
-        }, function(){
-            console.log('error');
-        });
-    }
+  this.name = null;
+  this.content = null;
+  this.createdAt = null;
+  this.indexOfEditFormToShow = null;
+  this.loggedInUser = false;
+  const controller = this;
+  $scope.toggleLogin = true;
+  $scope.adminmode = true;
 
-    this.getMessages = function(){
-        $http({
-            method:'GET',
-            url: 'https://agile-temple-00865.herokuapp.com/messages/',
-        }).then(function(response){
-            controller.messages = response.data; //set value on success
-        }, function(){
-            console.log('error');
-        });
-    };
+  // CREATE
+  this.createMessage = function(){
+      $http({
+          method:'POST',
+          url: 'https://agile-temple-00865.herokuapp.com/messages/',
+          data: {
+              name: this.name,
+              content: this.content,
+              createdAt: this.createdAt
+          }
+      })
+      .then(function(response){
+        console.log(response);
+        controller.getMessages(); //get all todos when new element is added
+      }, function(){
+        console.log('error');
+      });
+  }
 
-    this.deleteMessage = function(message){
-    $http({
-        method:'DELETE',
-        url: 'https://agile-temple-00865.herokuapp.com/messages/' + message._id
-    }).then(
-        function(response){
-            controller.getMessages();
-        },
-        function(error){
+    // READ
+  this.getMessages = function(){
+      $http({
+        method:'GET',
+        url: 'https://agile-temple-00865.herokuapp.com/messages/',
+      })
+      .then(function(response){
+        controller.messages = response.data; //set value on success
+      }, function(){
+        console.log('error');
+      });
+  };
 
-        }
+    // Delete
+  this.deleteMessage = function(message){
+  $http({
+      method:'DELETE',
+      url: 'https://agile-temple-00865.herokuapp.com/messages/' + message._id
+  }).then(
+      function(response){
+          controller.getMessages();
+      },
+      function(error){
+
+      }
     );
   }
+
   this.getMessages(); //call immediately once controller is instantiated to test
 
+  // EDIT
   this.editMessage = function(message){
     $http({
         method:'PUT',
@@ -83,6 +90,7 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
     );
   }
 
+  // USER AUTH
   this.signup = function(){
     $http({
         url:'https://agile-temple-00865.herokuapp.com/users',
@@ -138,9 +146,7 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
     })
   }
 
-}
-]
-);
+}]);
 
 //localStorage =============================================
 

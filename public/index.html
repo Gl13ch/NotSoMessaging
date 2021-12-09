@@ -21,9 +21,9 @@
         <div ng-switch-when=true>
           <h2>Log In</h2>
           <form ng-submit="ctrl.login()">
-              Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
-              Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
-              <input type="submit" value="Log In">
+            Username: <input id='loginuser' type="text" ng-model="ctrl.loginUsername"/><br/>
+            Password: <input id='loginpass' type="password" ng-model="ctrl.loginPassword"/><br/>
+            <input type="submit" value="Log In">
           </form>
         </div>
         <br />
@@ -34,50 +34,48 @@
       </div>
     </section>
 
-      <section class="loggedIn" ng-if="ctrl.loggedInUser !== false">
+    <section class="loggedIn" ng-if="ctrl.loggedInUser !== false">
+      <header>
+        <div class="header-content">
+          <h2>Not So Messaging</h2>
+          <h2>Welcome {{ctrl.loggedInUser.username}}</h2>
+          <button onClick="window.location.reload();" ng-click="ctrl.logout()">Log Out</button>
+        </div>
+      </header>
 
-        <header>
-          <div class="header-content">
-            <h2>Not So Messaging</h2>
-            <h2>Welcome {{ctrl.loggedInUser.username}}</h2>
-            <button onClick="window.location.reload();" ng-click="ctrl.logout()">Log Out</button>
+      <div ng-repeat="message in ctrl.messages" class="message-container">
+        <div ng-attr-id="{{ctrl.loggedInUser.username === message.name ? 'user': 'notUser'}}">
+          <div class="container">
+            <div class="name">{{message.name}} </div>
+            <div class="date">{{ message.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}</div>
+            <div class="message-content">{{message.content}}</div>
           </div>
-        </header>
 
-        <div ng-repeat="message in ctrl.messages" class="message-container">
-          <div ng-attr-id="{{ctrl.loggedInUser.username === message.name ? 'user': 'notUser'}}">
-            <div class="container">
-              <div class="name">{{message.name}} </div>
-              <div class="date">{{ message.createdAt | date:"MM/dd/yyyy 'at' h:mma"}}</div>
-              <div class="message-content">{{message.content}}</div>
+          <div class="hide">
+            <div ng-if="ctrl.loggedInUser.username === 'admin' || ctrl.loggedInUser.username === message.name">
+              <button ng-click="ctrl.deleteMessage(message)">Delete</button>
             </div>
-
-            <div class="hide">
-              <div ng-if="ctrl.loggedInUser.username === 'admin' || ctrl.loggedInUser.username === message.name">
-                <button ng-click="ctrl.deleteMessage(message)">Delete</button>
-              </div>
-              <div ng-if="ctrl.loggedInUser.username === message.name">
-                <a ng-if="$index !== ctrl.indexOfEditFormToShow"
-                href="#"
-                ng-click="ctrl.indexOfEditFormToShow = $index">
-                  Edit
-                </a>
-                <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
-                <form ng-submit="ctrl.editMessage(message);">
-                  <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
-                  <input type="submit" value="Save" >
-                </form>
-              </div>
+            <div ng-if="ctrl.loggedInUser.username === message.name">
+              <a ng-if="$index !== ctrl.indexOfEditFormToShow"
+              href="#"
+              ng-click="ctrl.indexOfEditFormToShow = $index">
+                Edit
+              </a>
+              <form ng-if="$index === ctrl.indexOfEditFormToShow" ng-submit="ctrl.editMessage(message);">
+              <form ng-submit="ctrl.editMessage(message);">
+                <input onfocus="this.value=''" type="text" ng-model="ctrl.updatedContent" placeholder="content" />
+                <input type="submit" value="Save" >
+              </form>
             </div>
           </div>
-            </div>
+        </div>
+      </div>
 
-        <form ng-submit="ctrl.createMessage()">
-          <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name = ctrl.loggedInUser.username"/>
-          <textarea onfocus="this.value=''" type="text" ng-model="ctrl.content" placeholder="content"></textarea>
-          <input type="submit" value="Send Message"/>
-        </form>
-      </section>
-
-    </body>
+      <form ng-submit="ctrl.createMessage()">
+        <input type="hidden" ng-model="ctrl.name" ng-init="ctrl.name = ctrl.loggedInUser.username"/>
+        <textarea onfocus="this.value=''" type="text" ng-model="ctrl.content" placeholder="content"></textarea>
+        <input type="submit" value="Send Message"/>
+      </form>
+    </section>
+  </body>
 </html>
