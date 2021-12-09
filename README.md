@@ -19,6 +19,7 @@ I tried to make this with AngularTs and hit quite a few road blocks. I decided t
 
 ## Known Issues
 * Need error handling for signup. When a user tries to sign up with an already created username it still logs them in and allows them to interact with the app even though there is no username connected to them.
+* Users can login to an account with just the username.
 
 ## Features that still need to be implemented
 * CSS
