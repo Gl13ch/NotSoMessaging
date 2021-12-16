@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="css/app.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.2/angular.min.js"></script>
     <script src="js/app.js" charset="utf-8"></script>
   </head>
   <body ng-controller="MyController as ctrl">
-    <section class="login-signup" ng-if="ctrl.loggedInUser === false">
+    <section class="login-signup" ng-if="!ctrl.loggedInUser">
       <div ng-switch="toggleLogin">
         <div ng-switch-default>
           <h2>Sign Up</h2>
@@ -34,7 +34,7 @@
       </div>
     </section>
 
-    <section class="loggedIn" ng-if="ctrl.loggedInUser !== false">
+    <section class="loggedIn" ng-if="ctrl.loggedInUser.username">
       <header>
         <div class="header-content">
           <h2>Not So Messaging</h2>

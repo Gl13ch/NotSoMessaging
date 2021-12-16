@@ -1,27 +1,16 @@
 const app = angular.module('MyApp', []);
+inventorialStorage = window.localStorage;
 
-// app.factory('storageService', ['$rootScope', function($rootScope) {
-//
-//     return {
-//         get: function(key) {
-//             return localStorage.getItem(key);
-//         },
-//         set: function(key, data) {
-//             localStorage.setItem(key, data);
-//         }
-//     };
-// }]);
-
-app.controller('MyController', ['$http', '$window', function($http, $scope, $window){
+app.controller('MyController', ['$http', function($http){
 
   this.name = null;
   this.content = null;
   this.createdAt = null;
   this.indexOfEditFormToShow = null;
-  this.loggedInUser = false;
+  this.loggedInUser = null;
+  this.toggleLogin = true;
+  this.adminmode = true;
   const controller = this;
-  $scope.toggleLogin = true;
-  $scope.adminmode = true;
 
   // CREATE
   this.createMessage = function(){
@@ -114,9 +103,8 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
       }
   }).then(function(response){
       if(response.data.username){
-        // console.log(response.data);
         controller.loggedInUser = response.data;
-        // $window.localStorage.setItem('data', 'response.data.username')
+        inventorialStorage.setItem('user', JSON.stringify(controller.loggedInUser));
 
       } else {
         controller.loginUsername = null;
@@ -129,22 +117,27 @@ app.controller('MyController', ['$http', '$window', function($http, $scope, $win
       method:'GET',
       url:'https://agile-temple-00865.herokuapp.com/sessions'
   }).then(function(response){
-      // console.log(response);
-      // let data = $window.localStorage.getItem('data')
-      // if (controller.loggedInUser !== false) {
-        // response.data = JSON.parse(data);
-      // }
+    const savedUser = JSON.parse(inventorialStorage.getItem('user'));
+    this.loggedInUser = savedUser;
   });
+
+  // this.loginWithSavedUser = () => {
+  //       const savedUser = JSON.parse(inventorialStorage.getItem('user'));
+  //       this.loggedInUser = savedUser;
+  //   }
+
 
   this.logout = function(){
     $http({
         url:'https://agile-temple-00865.herokuapp.com/sessions',
         method:'DELETE'
     }).then(function(){
-      controller.loggedInUser = false;
-      // $window.localStorage.removeItem('data')
+      controller.loggedInUser = null;
+      inventorialStorage.removeItem('user');
     })
   }
+
+  // this.loginWithSavedUser();
 
 }]);
 
